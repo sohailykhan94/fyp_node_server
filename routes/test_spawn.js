@@ -35,6 +35,7 @@ router.get('/', function(req, res, next) {
     var predict = spawn(queryString, args);
     predict.stdout.on('data', function(data){
       console.log('stdout: ' + data);
+      data = String(data);
       data = data.replace('[\'','');
       data = data.replace('\']','');
       data = data.replace(/(?:\r\n|\r|\n)/g,'');
