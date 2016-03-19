@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var get_prediction = require('./routes/get_prediction');
+var get_single_prediction = require('./routes/get_single_prediction');
 
 
 var app = express();
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/get_prediction', get_prediction);
+app.use('/get_single_prediction', get_single_prediction);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

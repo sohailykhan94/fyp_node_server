@@ -42,15 +42,6 @@ dateObj = dateObj - timedelta(hours = 8)
 importString = '/home/sohailyarkhan/pythonLearningModels/'+month+'/model.pkl'
 with open(importString, 'rb') as fid:
     SGD = cPickle.load(fid)
-cols = ['src', 'des'];
-data_speed = pd.read_csv('/home/sohailyarkhan/node-server/fyp_node_server/speedmap.csv', names=cols, dtype={})
-final_data = pd.DataFrame(columns=['year','month','day','hour','minute','src','des'])
-final_data['src'] = data_speed['src']
-final_data['des'] = data_speed['des']
-final_data['year'] = int(dateObj.year)
-final_data['month'] = int(dateObj.month)
-final_data['day'] = int(dateObj.day)
-final_data['hour'] = int(dateObj.hour)
-final_data['minute'] = int(dateObj.minute)
+final_data = pd.DataFrame(np.array([[int(dateObj.year), int(dateObj.month), int(dateObj.day), int(dateObj.hour), int(dateObj.minute), int(sys.argv[6]), int(sys.argv[7])]]), columns=['year','month','day','hour','minute','src','des'])
 pred_new = SGD.predict(final_data)
 print pred_new

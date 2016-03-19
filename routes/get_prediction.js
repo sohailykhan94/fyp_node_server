@@ -3,8 +3,7 @@ var router = express.Router();
 var sys = require('sys')
 var exec = require('child_process').exec;
 var child;
-var Converter = require("csvtojson").Converter;
-var converter = new Converter({});
+var fs = require('fs');
 
 router.use(function(req, res, next){
   console.log('Prediction API');
@@ -26,13 +25,10 @@ router.get('/', function(req, res, next) {
         splitArray[0] = splitArray[0].replace('\'','');
         splitArray[splitArray.length-1] = splitArray[0].replace('\'','');
         console.log(splitArray);
-        converter.fromFile("./speedMap_final.csv",function(err,result){
-            tempJSON = result;
-            for(var i = 0; i<splitArray.length; i++){
-              tempJSON[i].road_saturation = splitArray[i];
-            }
-            console.log(tempJSON);
-          });
+        var tempJSON = JSON.parse(fs.readFileSync('./speedMap.json', 'utf8'));
+        for(var i = 0; i<splitArray.length; i++){
+          tempJSON[i].road_saturation = splitArray[i];
+        }
         res.status(200);
         res.json({status: 'success', nodes: tempJSON});
       }else{
