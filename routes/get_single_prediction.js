@@ -44,7 +44,7 @@ router.get('/', function(req, res, next) {
             src_long: src_long,
             des_lat: des_lat,
             des_long: des_long,
-            label: label
+            road_saturation_level: label
           }
         res.status(200);
         res.json({status: 'success', nodes: result});
