@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sys = require('sys')
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var child;
 var fs = require('fs');
 
