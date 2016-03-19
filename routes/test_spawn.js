@@ -34,8 +34,8 @@ router.get('/', function(req, res, next) {
     var queryString = "/home/sohailyarkhan/anaconda2/bin/python /home/sohailyarkhan/node-server/fyp_node_server/prediction_single.py";
     var args = [String(req.query.year), String(req.query.month), String(req.query.day), String(req.query.hours), String(req.query.minutes), String(req.query.src), String(req.query.des)];
     const predict = spawn(queryString, args);
-    predict.stdout.on('data', (data) => {
-      console.log('stdout: ${data}');
+    predict.stdout.on('data', function(data){
+      console.log('stdout: ' + data);
       data = data.replace('[\'','');
       data = data.replace('\']','');
       data = data.replace(/(?:\r\n|\r|\n)/g,'');
@@ -51,14 +51,14 @@ router.get('/', function(req, res, next) {
       res.json({status: 'success', nodes: result});
     });
 
-    predict.stderr.on('data', (data) => {
-      console.log('stderr: ${data}');
+    predict.stderr.on('data', function(data){
+      console.log('stderr: ' + data);
       res.status(404);
       res.json({status: 'error', data: data});
     });
 
-    predict.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
+    predict.on('close', function(code){
+      console.log('child process exited with code ' + code);
     });
   }else{
     res.status(404);
