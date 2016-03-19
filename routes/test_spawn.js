@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sys = require('sys')
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var child;
 var fs = require('fs');
 
@@ -29,11 +30,9 @@ router.get('/', function(req, res, next) {
         var des_long = tempJSON[i].des_long;
       }
     }
-
-    const spawn = require('child_process').spawn;
     var queryString = "/home/sohailyarkhan/anaconda2/bin/python /home/sohailyarkhan/node-server/fyp_node_server/prediction_single.py";
     var args = [String(req.query.year), String(req.query.month), String(req.query.day), String(req.query.hours), String(req.query.minutes), String(req.query.src), String(req.query.des)];
-    const predict = spawn(queryString, args);
+    var predict = spawn(queryString, args);
     predict.stdout.on('data', function(data){
       console.log('stdout: ' + data);
       data = data.replace('[\'','');
