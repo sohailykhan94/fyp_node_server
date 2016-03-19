@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var sys = require('sys')
 var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
 var child;
 var fs = require('fs');
 
@@ -30,33 +29,36 @@ router.get('/', function(req, res, next) {
         var des_long = tempJSON[i].des_long;
       }
     }
-    var queryString = "/home/sohailyarkhan/anaconda2/bin/python /home/sohailyarkhan/node-server/fyp_node_server/prediction_single.py " + String(req.query.year) + " " + String(req.query.month) + " " + String(req.query.day) + " " + String(req.query.hours) + " " + String(req.query.minutes) + " " + String(req.query.src) + " " + String(req.query.des);
-    console.log(queryString);
-    // executes `pwd`
-    child = spawn(queryString, function (error, stdout, stderr) {
-      if(stdout){
-        stdout = stdout.replace('[\'','');
-        stdout = stdout.replace('\']','');
-        stdout = stdout.replace(/(?:\r\n|\r|\n)/g,'');
-        var label = stdout;
-          var result = {
-            src_lat: src_lat,
-            src_long: src_long,
-            des_lat: des_lat,
-            des_long: des_long,
-            road_saturation_level: label
-          }
-        res.status(200);
-        res.json({status: 'success', nodes: result});
-      }else{
-        res.status(404);
-        res.json({status: 'error', data: 'error'});
+
+    const spawn = require('child_process').spawn;
+    var queryString = "/home/sohailyarkhan/anaconda2/bin/python /home/sohailyarkhan/node-server/fyp_node_server/prediction_single.py";
+    var args = [String(req.query.year), String(req.query.month), String(req.query.day), String(req.query.hours), String(req.query.minutes), String(req.query.src), String(req.query.des)];
+    const predict = spawn(queryString, args);
+    predict.stdout.on('data', (data) => {
+      console.log('stdout: ${data}');
+      data = data.replace('[\'','');
+      data = data.replace('\']','');
+      data = data.replace(/(?:\r\n|\r|\n)/g,'');
+      var label = data;
+      var result = {
+        src_lat: src_lat,
+        src_long: src_long,
+        des_lat: des_lat,
+        des_long: des_long,
+        road_saturation_level: label
       }
-      //sys.print('stdout: ' + stdout);
-      //sys.print('stderr: ' + stderr);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      }
+      res.status(200);
+      res.json({status: 'success', nodes: result});
+    });
+
+    predict.stderr.on('data', (data) => {
+      console.log('stderr: ${data}');
+      res.status(404);
+      res.json({status: 'error', data: data});
+    });
+
+    predict.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
     });
   }else{
     res.status(404);
