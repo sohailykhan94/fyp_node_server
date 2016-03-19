@@ -30,8 +30,8 @@ router.get('/', function(req, res, next) {
         var des_long = tempJSON[i].des_long;
       }
     }
-    var queryString = "/home/sohailyarkhan/anaconda2/bin/python /home/sohailyarkhan/node-server/fyp_node_server/prediction_single.py";
-    var args = [String(req.query.year), String(req.query.month), String(req.query.day), String(req.query.hours), String(req.query.minutes), String(req.query.src), String(req.query.des)];
+    var queryString = "/home/sohailyarkhan/anaconda2/bin/python";
+    var args = ["/home/sohailyarkhan/node-server/fyp_node_server/prediction_single.py", String(req.query.year), String(req.query.month), String(req.query.day), String(req.query.hours), String(req.query.minutes), String(req.query.src), String(req.query.des)];
     var predict = spawn(queryString, args);
     predict.stdout.on('data', function(data){
       console.log('stdout: ' + data);
