@@ -37,9 +37,16 @@ router.get('/', function(req, res, next) {
         stdout = stdout.replace('[\'','');
         stdout = stdout.replace('\']','');
         var tempJSON = JSON.parse(fs.readFileSync('./speedMap.json', 'utf8'));
-        tempJSON[i].road_saturation = stdout;
+        var label = stdout;
+          var result = {
+            src_lat: src_lat,
+            src_long: src_long,
+            des_lat: des_lat,
+            des_long: des_long,
+            label: label
+          }
         res.status(200);
-        res.json({status: 'success', nodes: tempJSON});
+        res.json({status: 'success', nodes: result});
       }else{
         res.status(404);
         res.json({status: 'error', data: 'error'});
