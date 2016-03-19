@@ -36,6 +36,7 @@ router.get('/', function(req, res, next) {
       if(stdout){
         stdout = stdout.replace('[\'','');
         stdout = stdout.replace('\']','');
+        stdout = stdout.replace(/(?:\r\n|\r|\n)/g,'');
         var tempJSON = JSON.parse(fs.readFileSync('./speedMap.json', 'utf8'));
         var label = stdout;
           var result = {
