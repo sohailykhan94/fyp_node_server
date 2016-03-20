@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
         var des_long = tempJSON[i].des_long;
       }
     }
-    var queryString = String(req.query.year) + " " + String(req.query.month) + " " + String(req.query.day) + " " + String(req.query.hours) + " " + String(req.query.minutes) + " " + String(req.query.src) + " " + String(req.query.des) + "\n";
+    var queryString = String(req.query.year) + " " + String(req.query.month) + " " + String(req.query.day) + " " + String(req.query.hours) + " " + String(req.query.minutes) + " " + String(req.query.src) + " " + String(req.query.des);
     console.log(queryString);
     // executes `pwd`
     pyshell.send(queryString);
@@ -63,6 +63,9 @@ router.get('/', function(req, res, next) {
       }
     });
 
+    pyshell.end(function (err) {
+      if (err) throw err;
+    });
     pyshell.on('error', function(err){
       res.status(404);
       res.json({status: 'error', data: err});
