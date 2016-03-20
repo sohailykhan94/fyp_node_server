@@ -63,13 +63,6 @@ router.get('/', function(req, res, next) {
       }
     });
 
-    pyshell.end(function (err) {
-      if (err) throw err;
-    });
-    pyshell.on('error', function(err){
-      res.status(404);
-      res.json({status: 'error', data: err});
-    })
   }else{
     res.status(404);
     res.json({status: 'error', data: 'error'});
