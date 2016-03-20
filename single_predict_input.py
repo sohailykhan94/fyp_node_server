@@ -51,5 +51,8 @@ def predict(str):
     return pred_new
 
 while endSignal == False:
-    x = raw_input()
-    print predict(x)
+    try:
+        x = raw_input()
+        print predict(x)
+    except (EOFError):
+        continue
