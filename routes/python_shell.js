@@ -63,10 +63,7 @@ router.get('/', function(req, res, next) {
       }
     });
 
-    // pyshell.end(function (err) {
-    //   if (err) throw err;
-    //   console.log('finished');
-    // });
+
     pyshell.on('error', function(err){
       res.status(404);
       res.json({status: 'error', data: err});
@@ -75,6 +72,11 @@ router.get('/', function(req, res, next) {
     res.status(404);
     res.json({status: 'error', data: 'error'});
   }
+});
+
+pyshell.end(function (err) {
+  if (err) throw err;
+  console.log('finished');
 });
 
 //2,11,2014,19,0,4651,4631, 30
