@@ -22,6 +22,7 @@ import pandas as pd
 endSignal = False
 
 def predict(str):
+    str = str.rstrip('\n')
     str_array = str.split()
     if len(str_array) != 7:
         return "Incorrect Input"
