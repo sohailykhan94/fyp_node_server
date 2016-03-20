@@ -51,6 +51,6 @@ def predict(str):
     pred_new = SGD.predict(final_data)
     return pred_new
 
-while endSignal != True:
-    for line in sys.stdin:
-        print predict(line)
+while endSignal == False:
+    x = raw_input()
+    print predict(x)
