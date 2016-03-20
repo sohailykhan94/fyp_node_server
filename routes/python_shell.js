@@ -8,7 +8,8 @@ var PythonShell = require('python-shell');
 var options = {
   mode: 'text',
   scriptPath: '/home/sohailyarkhan/node-server/fyp_node_server/',
-  pythonPath: '/home/sohailyarkhan/anaconda2/bin/python'
+  pythonPath: '/home/sohailyarkhan/anaconda2/bin/python',
+  encoding: 'ascii'
 };
 var pyshell = new PythonShell('single_predict_input.py',options);
 
