@@ -22,7 +22,6 @@ import pandas as pd
 endSignal = False
 
 def predict(str):
-    str = str.rstrip('\n')
     str_array = str.split()
     if len(str_array) != 7:
         return "Incorrect Input"
@@ -52,5 +51,5 @@ def predict(str):
     return pred_new
 
 while endSignal == False:
-    for line in sys.stdin:
-        print predict(line)
+    x = raw_input()
+    print predict(x)
