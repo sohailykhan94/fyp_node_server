@@ -40,11 +40,7 @@ router.get('/', function(req, res, next) {
     console.log(queryString);
     // executes `pwd`
     pyshell.send(queryString);
-    pyshell.on('error', function(err){
-      res.status(404);
-      res.json({status: 'error', data: err});
-    })
-    pyshell.stdout.on('message', function (message) {
+    pyshell.on('message', function (message) {
     // received a message sent from the Python script (a simple "print" statement)
       console.log(message);
       if(message){
@@ -71,6 +67,10 @@ router.get('/', function(req, res, next) {
       if (err) throw err;
       console.log('finished');
     });
+    pyshell.on('error', function(err){
+      res.status(404);
+      res.json({status: 'error', data: err});
+    })
   }else{
     res.status(404);
     res.json({status: 'error', data: 'error'});
