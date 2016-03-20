@@ -66,6 +66,11 @@ router.get('/', function(req, res, next) {
         res.json({status: 'error', data: 'error'});
       }
     });
+
+    pyshell.end(function (err) {
+      if (err) throw err;
+      console.log('finished');
+    });
   }else{
     res.status(404);
     res.json({status: 'error', data: 'error'});
