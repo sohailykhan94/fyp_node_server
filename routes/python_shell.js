@@ -7,9 +7,14 @@ var fs = require('fs');
 var PythonShell = require('python-shell');
 var options = {
   mode: 'text',
-  scriptPath: '/home/sohailyarkhan/node-server/fyp_node_server/'
+  scriptPath: '/home/sohailyarkhan/node-server/fyp_node_server/',
+  pythonPath: '/home/sohailyarkhan/anaconda2/bin/python'
 };
-var pyshell = new PythonShell('single_predict_input.py',options);
+var pyshell = PythonShell.run('single_predict_input.py',options, function (err, results) {
+  if (err) throw err;
+  // results is an array consisting of messages collected during execution
+  console.log('results: %j', results);
+});
 
 router.use(function(req, res, next){
   console.log('Prediction Single Input Python API');
@@ -41,7 +46,7 @@ router.get('/', function(req, res, next) {
     pyshell.send(queryString);
     pyshell.on('message', function (message) {
     // received a message sent from the Python script (a simple "print" statement)
-    console.log(message); 
+    console.log(message);
     if(message){
       message = message.replace('[\'','');
       message = message.replace('\']','');
