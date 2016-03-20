@@ -10,11 +10,7 @@ var options = {
   scriptPath: '/home/sohailyarkhan/node-server/fyp_node_server/',
   pythonPath: '/home/sohailyarkhan/anaconda2/bin/python'
 };
-var pyshell = PythonShell.run('single_predict_input.py',options, function (err, results) {
-  if (err) throw err;
-  // results is an array consisting of messages collected during execution
-  console.log('results: %j', results);
-});
+var pyshell = new PythonShell('single_predict_input.py',options);
 
 router.use(function(req, res, next){
   console.log('Prediction Single Input Python API');
@@ -44,27 +40,27 @@ router.get('/', function(req, res, next) {
     console.log(queryString);
     // executes `pwd`
     pyshell.send(queryString);
-    pyshell.on('message', function (message) {
+    pyshell.stdout.on('message', function (message) {
     // received a message sent from the Python script (a simple "print" statement)
-    console.log(message);
-    if(message){
-      message = message.replace('[\'','');
-      message = message.replace('\']','');
-      message = message.replace(/(?:\r\n|\r|\n)/g,'');
-      var label = message;
-        var result = {
-          src_lat: src_lat,
-          src_long: src_long,
-          des_lat: des_lat,
-          des_long: des_long,
-          road_saturation_level: label
-        }
-      res.status(200);
-      res.json({status: 'success', nodes: result});
-    }else{
-      res.status(404);
-      res.json({status: 'error', data: 'error'});
-    }
+      console.log(message);
+      if(message){
+        message = message.replace('[\'','');
+        message = message.replace('\']','');
+        message = message.replace(/(?:\r\n|\r|\n)/g,'');
+        var label = message;
+          var result = {
+            src_lat: src_lat,
+            src_long: src_long,
+            des_lat: des_lat,
+            des_long: des_long,
+            road_saturation_level: label
+          }
+        res.status(200);
+        res.json({status: 'success', nodes: result});
+      }else{
+        res.status(404);
+        res.json({status: 'error', data: 'error'});
+      }
     });
   }else{
     res.status(404);
