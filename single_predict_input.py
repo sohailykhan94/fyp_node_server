@@ -1,3 +1,5 @@
+#!flask/bin/python
+from flask import Flask, jsonify, request
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -18,11 +20,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 
 import pandas as pd
-
-endSignal = False
-
 def predict(str):
-    str = str.rstrip('\n')
     str_array = str.split()
     if len(str_array) != 7:
         return "Incorrect Input"
@@ -51,6 +49,19 @@ def predict(str):
     pred_new = SGD.predict(final_data)
     return pred_new
 
-while endSignal == False:
-    input_str = sys.stdin.readline()
-    sys.stdout.write(predict(input_str))
+app = Flask(__name__)
+
+@app.route('/get_prediction', methods=['GET'])
+def getPrediction():
+    year = request.args.get('year')
+    month = request.args.get('month')
+    day = request.args.get('day')
+    hour = request.args.get('hour')
+    minute = request.args.get('minute')
+    src = request.args.get('src')
+    des = request.args.get('des')
+    prediction = predict(str(year) + " " + str(month) + " " + str(day) + " " + str(hour) + " " + str(minute) + " " + str(src) + " " + str(des))
+    return jsonify({'result': str(prediction)})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=3000)
