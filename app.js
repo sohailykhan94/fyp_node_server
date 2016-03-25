@@ -9,7 +9,6 @@ var routes = require('./routes/index');
 var get_prediction = require('./routes/get_prediction');
 var get_single_prediction = require('./routes/get_single_prediction');
 var test_spawn = require('./routes/test_spawn');
-var python_shell = require('./routes/python_shell');
 
 
 var app = express();
@@ -30,7 +29,6 @@ app.use('/', routes);
 app.use('/get_prediction', get_prediction);
 app.use('/get_single_prediction', get_single_prediction);
 app.use('/test_spawn', test_spawn);
-app.use('/python_shell', python_shell);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
